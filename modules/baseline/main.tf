@@ -1,15 +1,3 @@
-locals {
-  # Flatten alert_definitions into a unique key per alert+scope
-  expanded_alerts = merge([
-    for alert_key, alert in var.alert_definitions : {
-      for scope_id in alert.target_resource_ids :
-      "${alert_key}-${replace(basename(scope_id), "/", "-")}" => merge(alert, {
-        scope_id = scope_id
-      })
-    }
-  ]...)
-}
-
 resource "azurerm_monitor_metric_alert" "baseline" {
   for_each = local.expanded_alerts
 
