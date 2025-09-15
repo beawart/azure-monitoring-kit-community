@@ -1,14 +1,3 @@
-variable "resource_group_name" {
-  description = "Resource group for all alerts"
-  type        = string
-}
-
-variable "tags" {
-  description = "Base tags applied to all alerts"
-  type        = map(string)
-  default     = {}
-}
-
 variable "alert_definitions" {
   description = <<EOT
 Map of alert definitions keyed by a short name.
@@ -66,10 +55,6 @@ variable "target_resource_id" {
 
 variable "resource_group_name" {
   type = string
-}
-
-variable "action_group_ids" {
-  type = list(string)
 }
 
 variable "tags" {
