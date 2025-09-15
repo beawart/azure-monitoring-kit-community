@@ -1,7 +1,6 @@
 resource "azurerm_monitor_metric_alert" "baseline" {
   for_each = local.expanded_alerts
 
-  # Auto-generate name: <metric(s)>-<resourceName>-alert
   name = lower(
     replace(
       "${join("-", [for c in each.value.criteria : c.metric_name])}-${basename(each.value.scope_id)}-alert",
@@ -27,19 +26,9 @@ resource "azurerm_monitor_metric_alert" "baseline" {
       aggregation      = criteria.value.aggregation
       operator         = criteria.value.operator
       threshold        = criteria.value.threshold
-
-      dynamic "dimension" {
-        for_each = lookup(criteria.value, "dimensions", [])
-        content {
-          name     = dimension.value.name
-          operator = dimension.value.operator
-          values   = dimension.value.values
-        }
-      }
     }
   }
 
-  # Attach one or more Action Groups
   dynamic "action" {
     for_each = var.action_group_ids
     content {
@@ -47,4 +36,3 @@ resource "azurerm_monitor_metric_alert" "baseline" {
     }
   }
 }
-

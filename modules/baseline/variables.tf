@@ -60,3 +60,19 @@ variable "action_group_ids" {
   default     = []
 }
 
+variable "target_resource_id" {
+  type = string
+}
+
+variable "resource_group_name" {
+  type = string
+}
+
+variable "action_group_ids" {
+  type = list(string)
+}
+
+variable "tags" {
+  type    = map(string)
+  default = {}
+}
