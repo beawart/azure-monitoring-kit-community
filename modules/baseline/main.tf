@@ -13,9 +13,9 @@ resource "azurerm_monitor_metric_alert" "baseline" {
   scopes              = [each.value.scope_id]
   description         = coalesce(each.value.description, "Baseline metric alert")
   severity            = coalesce(each.value.severity, 3)
-  frequency           = coalesce(each.value.frequency, "PT5M")
-  window_size         = coalesce(each.value.window_size, "PT5M")
-  enabled             = coalesce(each.value.enabled, true)
+  frequency           = lookup(each.value, "frequency", "PT5M")
+  window_size         = lookup(each.value, "window_size", "PT5M")
+  enabled             = lookup(each.value, "enabled", true)
   tags                = merge(var.tags, lookup(each.value, "tags", {}))
 
   dynamic "criteria" {
