@@ -28,6 +28,7 @@ locals {
           aggregation      = "Average"
           operator         = "GreaterThan"
           threshold        = 5e+14
+          frequency        = PT6H
         }
       ]
     }
