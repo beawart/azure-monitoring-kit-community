@@ -21,6 +21,8 @@ locals {
       scope_id    = var.target_resource_id
       description = "UsedCapacity - Metric Alert"
       severity    = 2
+      frequency   = "PT1H"
+      window_size = "PT6H"
       criteria = [
         {
           metric_namespace = "Microsoft.Storage/storageAccounts"
@@ -28,8 +30,6 @@ locals {
           aggregation      = "Average"
           operator         = "GreaterThan"
           threshold        = 5e+14
-          frequency        = "PT1H"
-          window_size      = "PT6H"
         }
       ]
     }
