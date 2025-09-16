@@ -1,5 +1,10 @@
+locals {
+  alerts = local.st_alerts
+}
+
+
 resource "azurerm_monitor_metric_alert" "baseline" {
-  for_each = local.expanded_alerts
+  for_each = local.alerts
 
   name = lower(
     replace(
