@@ -28,7 +28,8 @@ locals {
           aggregation      = "Average"
           operator         = "GreaterThan"
           threshold        = 5e+14
-          frequency        = "PT6H"
+          frequency        = "PT1H"
+          window_size      = "PT6H"
         }
       ]
     }
