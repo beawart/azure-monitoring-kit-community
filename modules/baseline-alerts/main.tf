@@ -30,7 +30,7 @@ resource "azurerm_monitor_metric_alert" "baseline" {
   name                = lower("${each.key}-${basename(var.target_resource_ids[0])}-alert")
   resource_group_name = var.resource_group_name
   scopes              = var.target_resource_ids
-  description         = coalesce(each.value.description, "${each.key} metric alert")
+  description         = coalesce(lookup(each.value, "description", null), "${each.key} metric alert")
   severity            = lookup(each.value, "severity", 3)
   frequency           = lookup(each.value, "frequency", "PT5M")
   window_size         = lookup(each.value, "window_size", "PT5M")
