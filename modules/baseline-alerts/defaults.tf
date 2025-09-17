@@ -34,4 +34,25 @@ locals {
       }
     }
   }
+
+  # Derived allowed values for the selected resource_type
+  allowed_metric_namespaces = distinct([
+    for _, cfg in lookup(local.baseline_defaults, var.resource_type, {}) :
+    cfg.metric_namespace if lookup(cfg, "alert_type", "") == "metric"
+  ])
+
+  allowed_metric_names = distinct([
+    for _, cfg in lookup(local.baseline_defaults, var.resource_type, {}) :
+    cfg.metric_name if lookup(cfg, "alert_type", "") == "metric"
+  ])
+
+  allowed_activity_categories = distinct([
+    for _, cfg in lookup(local.baseline_defaults, var.resource_type, {}) :
+    cfg.category if lookup(cfg, "alert_type", "") == "activity_log"
+  ])
+
+  allowed_activity_operations = distinct([
+    for _, cfg in lookup(local.baseline_defaults, var.resource_type, {}) :
+    cfg.operation if lookup(cfg, "alert_type", "") == "activity_log"
+  ])
 }
