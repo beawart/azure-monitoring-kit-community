@@ -18,8 +18,9 @@ locals {
 resource "azurerm_monitor_metric_alert" "baseline" {
   for_each = {
     for name, cfg in local.merged_alerts :
-    name => cfg if lookup(cfg, "enabled", true)
+    name => cfg if coalesce(lookup(cfg, "enabled", true), true)
   }
+
 
   name                = lower("${each.key}-${basename(var.target_resource_ids[0])}-alert")
   resource_group_name = var.resource_group_name
