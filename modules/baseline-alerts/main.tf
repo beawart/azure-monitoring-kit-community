@@ -71,7 +71,7 @@ resource "azurerm_monitor_activity_log_alert" "baseline" {
 
   name                = lower("${each.key}-${basename(var.target_resource_ids[0])}-alert")
   resource_group_name = var.resource_group_name
-  location            = data.azurerm_resource_group.rg.location
+  location            = "global" # Required fixed value for this resource type
   scopes              = var.target_resource_ids
   description         = coalesce(lookup(each.value, "description", null), "${each.key} activity log alert")
   enabled             = lookup(each.value, "enabled", true)
