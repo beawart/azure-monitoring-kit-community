@@ -5,15 +5,20 @@
 #############################################
 
 locals {
-  # Merge defaults with overrides
+  clean_overrides = {
+    for k, v in var.alerts_overrides :
+    k => { for kk, vv in v : kk => vv if vv != null }
+  }
+
   merged_alerts = {
     for alert_name, default_cfg in lookup(local.baseline_defaults, var.resource_type, {}) :
     alert_name => merge(
       default_cfg,
-      try(var.alerts_overrides[alert_name], {}) # safer than lookup() here
+      lookup(local.clean_overrides, alert_name, {})
     )
   }
 }
+
 
 resource "azurerm_monitor_metric_alert" "baseline" {
   for_each = {
