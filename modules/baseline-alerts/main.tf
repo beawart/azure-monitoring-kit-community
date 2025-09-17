@@ -10,7 +10,7 @@ locals {
     for alert_name, default_cfg in lookup(local.baseline_defaults, var.resource_type, {}) :
     alert_name => merge(
       default_cfg,
-      lookup(var.alerts_overrides, alert_name, {})
+      try(var.alerts_overrides[alert_name], {}) # safer than lookup() here
     )
   }
 }
