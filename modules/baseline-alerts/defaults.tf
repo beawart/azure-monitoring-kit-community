@@ -35,7 +35,7 @@ locals {
     }
   }
 
-  # Derived allowed values for the selected resource_type
+  # Allowed values derived from defaults
   allowed_metric_namespaces = distinct([
     for _, cfg in lookup(local.baseline_defaults, var.resource_type, {}) :
     cfg.metric_namespace if lookup(cfg, "alert_type", "") == "metric"

@@ -1,7 +1,3 @@
-#############################################
-# Variables for baseline-alerts
-#############################################
-
 variable "resource_group_name" {
   type = string
 }
@@ -34,7 +30,7 @@ variable "alerts_overrides" {
   }))
   default = {}
 
-  # 1️⃣ Window size restriction for UsedCapacity
+  # Static rules only — no locals here
   validation {
     condition = alltrue([
       for k, v in var.alerts_overrides :
@@ -47,7 +43,6 @@ variable "alerts_overrides" {
     error_message = "For 'UsedCapacity' alerts, window_size must be one of: PT1H, PT6H, PT12H, P1D."
   }
 
-  # 2️⃣ Severity must be 0–4
   validation {
     condition = alltrue([
       for _, v in var.alerts_overrides :
@@ -58,7 +53,6 @@ variable "alerts_overrides" {
     error_message = "Severity must be an integer between 0 and 4."
   }
 
-  # 3️⃣ Frequency must be ISO 8601 duration
   validation {
     condition = alltrue([
       for _, v in var.alerts_overrides :
@@ -68,60 +62,7 @@ variable "alerts_overrides" {
     ])
     error_message = "Frequency must be an ISO 8601 duration like PT5M, PT1H, etc."
   }
-
-  # 4️⃣ Metric namespace validation (dynamic from defaults)
-  validation {
-    condition = alltrue([
-      for _, v in var.alerts_overrides :
-      (
-        v.metric_namespace == null
-        || length(local.allowed_metric_namespaces) == 0
-        || contains(local.allowed_metric_namespaces, v.metric_namespace)
-      )
-    ])
-    error_message = "metric_namespace must be one of the allowed namespaces for this resource_type."
-  }
-
-  # 5️⃣ Metric name validation (dynamic from defaults)
-  validation {
-    condition = alltrue([
-      for _, v in var.alerts_overrides :
-      (
-        v.metric_name == null
-        || length(local.allowed_metric_names) == 0
-        || contains(local.allowed_metric_names, v.metric_name)
-      )
-    ])
-    error_message = "metric_name must be one of the allowed metrics for this resource_type."
-  }
-
-  # 6️⃣ Activity Log category validation (dynamic from defaults)
-  validation {
-    condition = alltrue([
-      for _, v in var.alerts_overrides :
-      (
-        v.category == null
-        || length(local.allowed_activity_categories) == 0
-        || contains(local.allowed_activity_categories, v.category)
-      )
-    ])
-    error_message = "Activity Log category must be one of the allowed categories for this resource_type."
-  }
-
-  # 7️⃣ Activity Log operation validation (dynamic from defaults)
-  validation {
-    condition = alltrue([
-      for _, v in var.alerts_overrides :
-      (
-        v.operation == null
-        || length(local.allowed_activity_operations) == 0
-        || contains(local.allowed_activity_operations, v.operation)
-      )
-    ])
-    error_message = "Activity Log operation must be one of the allowed operations for this resource_type."
-  }
 }
-
 
 variable "action_group_ids" {
   type = list(string)
@@ -131,5 +72,3 @@ variable "tags" {
   type    = map(string)
   default = {}
 }
-
-
