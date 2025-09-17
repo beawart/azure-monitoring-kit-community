@@ -43,3 +43,7 @@ variable "tags" {
   default = {}
 }
 
+variable "location" {
+  type = string
+}
+

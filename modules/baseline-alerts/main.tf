@@ -4,6 +4,10 @@
 # Author: Taha's Azure Kit - statem8
 #############################################
 
+data "azurerm_resource_group" "rg" {
+  name = var.resource_group_name
+}
+
 locals {
   clean_overrides = {
     for k, v in var.alerts_overrides :
@@ -17,15 +21,24 @@ locals {
       lookup(local.clean_overrides, alert_name, {})
     )
   }
+  metric_alerts = {
+    for name, cfg in local.merged_alerts :
+    name => cfg
+    if cfg.alert_type == "metric" && coalesce(lookup(cfg, "enabled", true), true)
+  }
+
+  activity_log_alerts = {
+    for name, cfg in local.merged_alerts :
+    name => cfg
+    if cfg.alert_type == "activity_log" && coalesce(lookup(cfg, "enabled", true), true)
+  }
 }
 
 
-resource "azurerm_monitor_metric_alert" "baseline" {
-  for_each = {
-    for name, cfg in local.merged_alerts :
-    name => cfg if coalesce(lookup(cfg, "enabled", true), true)
-  }
 
+
+resource "azurerm_monitor_metric_alert" "baseline" {
+  for_each = local.metric_alerts
 
   name                = lower("${each.key}-${basename(var.target_resource_ids[0])}-alert")
   resource_group_name = var.resource_group_name
@@ -52,4 +65,31 @@ resource "azurerm_monitor_metric_alert" "baseline" {
     }
   }
 }
+
+resource "azurerm_monitor_activity_log_alert" "baseline" {
+  for_each = local.activity_log_alerts
+
+  name                = lower("${each.key}-${basename(var.target_resource_ids[0])}-alert")
+  resource_group_name = var.resource_group_name
+  location            = data.azurerm_resource_group.rg.location
+  scopes              = var.target_resource_ids
+  description         = coalesce(lookup(each.value, "description", null), "${each.key} activity log alert")
+  enabled             = lookup(each.value, "enabled", true)
+  tags                = merge(var.tags, lookup(each.value, "tags", {}))
+
+  criteria {
+    category       = each.value.category
+    operation_name = each.value.operation
+  }
+
+  dynamic "action" {
+    for_each = var.action_group_ids
+    content {
+      action_group_id = action.value
+    }
+  }
+}
+
+
+
 

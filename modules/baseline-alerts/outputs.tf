@@ -2,14 +2,16 @@
 # Outputs for baseline-alerts
 #############################################
 
-# output "id" {
-#   description = "The ID of the created resource"
-#   value       = azurerm_<service>.this.id
-# }
+output "merged_alerts" {
+  value = local.merged_alerts
+}
 
-# output "name" {
-#   description = "The name of the created resource"
-#   value       = azurerm_<service>.this.name
-# }
+output "metric_alerts" {
+  value = local.metric_alerts
+}
+
+output "activity_log_alerts" {
+  value = local.activity_log_alerts
+}
 
 # Add more outputs as needed

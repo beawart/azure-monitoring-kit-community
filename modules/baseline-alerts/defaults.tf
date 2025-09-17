@@ -2,6 +2,7 @@ locals {
   baseline_defaults = {
     storage_account = {
       availability = {
+        alert_type       = "metric"
         metric_namespace = "Microsoft.Storage/storageAccounts"
         metric_name      = "Availability"
         aggregation      = "Average"
@@ -13,6 +14,7 @@ locals {
         enabled          = true
       }
       used_capacity = {
+        alert_type       = "metric"
         metric_namespace = "Microsoft.Storage/storageAccounts"
         metric_name      = "UsedCapacity"
         aggregation      = "Average"
@@ -23,19 +25,12 @@ locals {
         window_size      = "PT6H"
         enabled          = true
       }
-    }
-
-    key_vault = {
-      service_latency = {
-        metric_namespace = "Microsoft.KeyVault/vaults"
-        metric_name      = "ServiceApiLatency"
-        aggregation      = "Average"
-        operator         = "GreaterThan"
-        threshold        = 500
-        severity         = 2
-        frequency        = "PT5M"
-        window_size      = "PT5M"
-        enabled          = true
+      network_rule_change = {
+        alert_type = "activity_log"
+        category   = "Administrative"
+        operation  = "Microsoft.Storage/storageAccounts/networkRuleSets/write"
+        severity   = 2
+        enabled    = true
       }
     }
   }
