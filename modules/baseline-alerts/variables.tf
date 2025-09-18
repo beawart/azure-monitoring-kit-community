@@ -33,18 +33,6 @@ variable "alerts_overrides" {
   # Static rules only — no locals here
   validation {
     condition = alltrue([
-      for k, v in var.alerts_overrides :
-      (
-        lower(k) != "used_capacity"
-        || v.window_size == null
-        || contains(["PT1H", "PT6H", "PT12H", "P1D"], v.window_size)
-      )
-    ])
-    error_message = "For 'UsedCapacity' alerts, window_size must be one of: PT1H, PT6H, PT12H, P1D."
-  }
-
-  validation {
-    condition = alltrue([
       for _, v in var.alerts_overrides :
       (
         v.severity == null || contains([0, 1, 2, 3, 4], v.severity)
