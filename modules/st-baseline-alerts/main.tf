@@ -35,7 +35,7 @@ locals {
 # -------------------
 # Metric Alerts
 # -------------------
-resource "azurerm_monitor_metric_alert" "baseline" {
+resource "azurerm_monitor_metric_alert" "st-baseline" {
   for_each = local.metric_alerts
 
   name                = lower("${each.key}-${basename(var.target_resource_ids[0])}-alert")
@@ -79,7 +79,7 @@ resource "azurerm_monitor_metric_alert" "baseline" {
 # -------------------
 # Activity Log Alerts
 # -------------------
-resource "azurerm_monitor_activity_log_alert" "baseline" {
+resource "azurerm_monitor_activity_log_alert" "st-baseline" {
   for_each            = local.activity_log_alerts
   name                = lower("${each.key}-${basename(var.target_resource_ids[0])}-alert")
   resource_group_name = var.resource_group_name
