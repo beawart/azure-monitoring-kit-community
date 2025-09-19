@@ -1,6 +1,6 @@
 #############################################
-# Module: baseline-alerts
-# Purpose: Module for all Baseline Alerting
+# Module: Storage Account Baseline-alerts
+# Purpose: Module for all Storage Account Baseline Alerting
 # Author: Taha's Azure Kit - statem8
 #############################################
 
