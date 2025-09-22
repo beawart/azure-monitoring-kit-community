@@ -91,7 +91,7 @@ resource "azurerm_monitor_activity_log_alert" "st-baseline" {
 
   criteria {
     category       = each.value.category
-    operation_name = each.value.operation
+    operation_name = each.value.operation_name
   }
 
   dynamic "action" {
