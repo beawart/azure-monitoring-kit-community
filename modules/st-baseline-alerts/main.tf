@@ -108,7 +108,7 @@ resource "azurerm_monitor_activity_log_alert" "st-baseline" {
       error_message = "Invalid category for ${each.key}."
     }
     precondition {
-      condition     = contains(local.allowed_activity_operations, each.value.operation)
+      condition     = contains(local.allowed_activity_operations, each.value.operation_name)
       error_message = "Invalid operation for ${each.key}."
     }
   }
