@@ -26,11 +26,11 @@ locals {
         enabled          = true
       }
       network_rule_change = {
-        alert_type = "activity_log"
-        category   = "Administrative"
-        operation  = "Microsoft.Storage/storageAccounts/networkRuleSets/write"
-        severity   = 2
-        enabled    = true
+        alert_type     = "activity_log"
+        category       = "Administrative"
+        operation_name = "Microsoft.Storage/storageAccounts/write"
+        severity       = 2
+        enabled        = true
       }
     }
   }
