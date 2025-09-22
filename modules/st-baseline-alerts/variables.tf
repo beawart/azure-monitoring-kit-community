@@ -33,10 +33,8 @@ variable "alerts_overrides" {
   # Static rules only — no locals here
   validation {
     condition = alltrue([
-      for _, v in var.alerts_overrides :
-      (
-        v.severity == null || contains([0, 1, 2, 3, 4], v.severity)
-      )
+      for k, v in var.alerts_overrides :
+      v.severity == null ? true : contains([0, 1, 2, 3, 4], v.severity)
     ])
     error_message = "Severity must be an integer between 0 and 4."
   }
