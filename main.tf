@@ -18,12 +18,3 @@ provider "azurerm" {
 # -------------------------
 
 # Baseline-alerts
-
-# -------------------------
-# Pro-Only Modules
-# -------------------------
-
-# Dynamic Metric Alerting
-# Alert rule processing
-# Azure monitor - Prod ready - Dashboard and Workbooks
-# DCR
