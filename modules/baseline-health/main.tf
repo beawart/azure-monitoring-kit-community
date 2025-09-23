@@ -1,10 +1,10 @@
 #############################################
-# Module: Storage Account Baseline-alerts
-# Purpose: Module for all Storage Account Baseline Alerting
-# Author: Taha's Azure Kit - statem8
+# Module: Baseline Resource Health Alerts
+# Resources Covered: Monitor VM, App Service, Storage, SQL DB health
+# Purpose: Covers the “is it up?” question for most workloads
+# Author: Taha's Azure Monitoring Kit Community Edition - statem8
 #############################################
 
-# Clean overrides (remove nulls)
 locals {
   clean_overrides = {
     for k, v in var.alerts_overrides :
@@ -35,7 +35,7 @@ locals {
 # -------------------
 # Metric Alerts
 # -------------------
-resource "azurerm_monitor_metric_alert" "st-baseline" {
+resource "azurerm_monitor_metric_alert" "baseline-health" {
   for_each = local.metric_alerts
 
   name                = lower("${each.key}-${basename(var.target_resource_ids[0])}-alert")
@@ -79,7 +79,7 @@ resource "azurerm_monitor_metric_alert" "st-baseline" {
 # -------------------
 # Activity Log Alerts
 # -------------------
-resource "azurerm_monitor_activity_log_alert" "st-baseline" {
+resource "azurerm_monitor_activity_log_alert" "activity-baseline" {
   for_each            = local.activity_log_alerts
   name                = lower("${each.key}-${basename(var.target_resource_ids[0])}-alert")
   resource_group_name = var.resource_group_name
