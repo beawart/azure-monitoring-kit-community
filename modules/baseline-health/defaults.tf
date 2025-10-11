@@ -29,7 +29,7 @@ locals {
       vm_availability = {
         alert_type       = "metric"
         metric_namespace = "Microsoft.Compute/virtualMachines"
-        metric_name      = "Availability"
+        metric_name      = "VmAvailabilityMetric"
         aggregation      = "Average"
         operator         = "LessThan"
         threshold        = 100
